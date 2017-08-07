@@ -3,29 +3,30 @@
 ##########################
 # This script will be located on the devilbox base folder
 
-INSTANCE_ID='place unique id'
-PHP_VERSION='php56, php70 or php71'
-DOMAIN='domain'
-REPOSITORY='repository'
-PR_ID='id'
+PHP_VERSION="xx"
+UNIQUE_ID="xxxx"
+INSTANCE_ID="${PHP_VERSION}${UNIQUE_ID}"
+DOMAIN="domain"
+REPOSITORY="repository"
+PR_ID="id"
 INSTANCE_FOLDER=${INSTANCE_ID}.${DOMAIN}
-HOST_INSTANCE_FOLDER=data/www/${PHP_VERSION}/${INSTANCE_FOLDER}/htdocs
-DB_PASSWORD=root
+HOST_INSTANCE_FOLDER=data/www/php${PHP_VERSION}/${INSTANCE_FOLDER}/htdocs
+DB_PASSWORD="password"
 DB_NAME="joomla-${INSTANCE_ID}"
 
 ####################################
 # Creates folder for joomla instance
 
-mkdir data/www/${PHP_VERSION}/${INSTANCE_FOLDER}
-mkdir data/www/${PHP_VERSION}/${INSTANCE_FOLDER}/htdocs
+mkdir data/www/php${PHP_VERSION}/${INSTANCE_FOLDER}/
+mkdir data/www/php${PHP_VERSION}/${INSTANCE_FOLDER}/htdocs
 
 ####################################################################
 # Copies the PR code from jenkins workspace into the instance folder
 
-cp -r /data/jenkins/workspace/${REPOSITORY}/origin/pr/${PR_ID}/merge/. data/www/${HOST_INSTANCE_FOLDER}/htdocs
+cp -r data/jenkins/workspace/${REPOSITORY}/origin/pr/${PR_ID}/merge/. ${HOST_INSTANCE_FOLDER}/
 #git clone --depth 1 -b 4.0-dev --single-branch https://github.com/joomla/joomla-cms.git ${HOST_INSTANCE_FOLDER}
 
-echo "Joomla PR code placed in the instance folder in data/www/ folder."
+echo "Joomla PR code placed in the instance folder in data/www/php${PHP_VERSION}/ folder."
 
 cp files/users.sql ${HOST_INSTANCE_FOLDER}/installation/sql/mysql
 
@@ -47,7 +48,7 @@ echo "Configuration file generated in the Joomla instance base folder."
 ##################################################
 # Sets up folder permissions and the DB
 
-docker-compose exec -d --user root ${PHP_VERSION} env TERM=xterm /bin/sh -c "cd /shared/httpd;
+docker-compose exec -d --user root php${PHP_VERSION} env TERM=xterm /bin/sh -c "cd /shared/httpd;
 chown -R devilbox:devilbox ${INSTANCE_FOLDER}/;
 chmod -R 755 ${INSTANCE_FOLDER}/;
 mysql --user=root --password=${DB_PASSWORD} --host=127.0.0.1 -e 'CREATE DATABASE \`${DB_NAME}\`;';
