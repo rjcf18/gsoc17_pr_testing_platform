@@ -422,7 +422,7 @@ services:
       - VIRTUAL_HOST=jenkins.dbox-tests.ml
       - VIRTUAL_PORT=8080
       - LETSENCRYPT_HOST=jenkins.dbox-tests.ml
-      - LETSENCRYPT_EMAIL=rjcf18@gmail.com
+      - LETSENCRYPT_EMAIL=email@email.com
 
     volumes:
       - ${DEVILBOX_PATH}/data/jenkins:/var/jenkins_home

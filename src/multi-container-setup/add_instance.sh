@@ -3,16 +3,15 @@
 ##########################
 # This script will be located on the devilbox base folder
 
-PHP_VERSION="xx"
-UNIQUE_ID="xxxx"
-INSTANCE_ID="${PHP_VERSION}${UNIQUE_ID}"
+PR_ID=$1
+PHP_VERSION=$2
+INSTANCE_ID=$3
 DOMAIN="domain"
 REPOSITORY="repository"
-PR_ID="id"
-INSTANCE_FOLDER=${INSTANCE_ID}.${DOMAIN}
-HOST_INSTANCE_FOLDER=data/www/php${PHP_VERSION}/${INSTANCE_FOLDER}/htdocs
 DB_PASSWORD="password"
 DB_NAME="joomla-${INSTANCE_ID}"
+INSTANCE_FOLDER=${INSTANCE_ID}.${DOMAIN}
+HOST_INSTANCE_FOLDER=data/www/php${PHP_VERSION}/${INSTANCE_FOLDER}/htdocs
 
 ####################################
 # Creates folder for joomla instance
