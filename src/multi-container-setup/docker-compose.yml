@@ -31,6 +31,8 @@ services:
   bind:
     image: cytopia/bind:latest
 
+    container_name: bind
+
     restart: always
 
     ports:
@@ -64,6 +66,8 @@ services:
   # ----------------------------------------
   php56:
     image: cytopia/php-fpm-5.6:latest
+
+    container_name: php56
 
     restart: always
 
@@ -173,6 +177,12 @@ services:
       # (configured in /etc/${HTTPD_SERVER}/02-vhost-mass.conf)
       - ${HOST_PATH_HTTPD_DATADIR}/php56:/shared/httpd
 
+      # Mount jenkins workspace folder
+      - ${DEVILBOX_PATH}/data/jenkins/workspace:/var/jenkins/workspace:ro
+
+      # Files to add/remove Joomla! instances
+      - ${DEVILBOX_PATH}/files:/shared/files:ro
+
     depends_on:
       - bind
 
@@ -181,6 +191,8 @@ services:
   # ----------------------------------------
   php70:
     image: cytopia/php-fpm-7.0:latest
+
+    container_name: php70
 
     restart: always
 
@@ -290,6 +302,12 @@ services:
       # (configured in /etc/${HTTPD_SERVER}/02-vhost-mass.conf)
       - ${HOST_PATH_HTTPD_DATADIR}/php70:/shared/httpd
 
+      # Mount jenkins workspace folder
+      - ${DEVILBOX_PATH}/data/jenkins/workspace:/var/jenkins/workspace:ro
+
+      # Files to add/remove Joomla! instances
+      - ${DEVILBOX_PATH}/files:/shared/files:ro
+
     depends_on:
       - bind
 
@@ -298,6 +316,8 @@ services:
   # ----------------------------------------
   php71:
     image: cytopia/php-fpm-7.1:latest
+
+    container_name: php71
 
     restart: always
 
@@ -407,6 +427,17 @@ services:
       # (configured in /etc/${HTTPD_SERVER}/02-vhost-mass.conf)
       - ${HOST_PATH_HTTPD_DATADIR}/php71:/shared/httpd
 
+      # Mount jenkins workspace folder
+      - ${DEVILBOX_PATH}/data/jenkins/workspace:/var/jenkins/workspace:ro
+
+      # Files to add/remove Joomla! instances
+      - ${DEVILBOX_PATH}/files:/shared/files:ro
+
+      # Mount docker socket and executable in order to add/remove joomla instances
+      # from inside the container
+      - /var/run/docker.sock:/var/run/docker.sock:ro
+      - /usr/bin/docker:/usr/bin/docker:ro
+
     depends_on:
       - bind
 
@@ -415,6 +446,8 @@ services:
   # ----------------------------------------
   jenkins:
     image: jenkins:latest
+
+    container_name: jenkins
 
     restart: always
 
@@ -439,6 +472,8 @@ services:
   # ------------------------------------------------------
   httpd:
     image: 'jwilder/nginx-proxy:latest'
+
+    container_name: httpd
 
     restart: always
 
@@ -469,6 +504,8 @@ services:
   companion:
     image: 'jrcs/letsencrypt-nginx-proxy-companion:latest'
 
+    container_name: companion
+
     restart: always
 
     volumes:
@@ -487,6 +524,8 @@ services:
   # ----------------------------------------
   httpd56:
     image: cytopia/${HTTPD_SERVER:-nginx-stable}:latest
+
+    container_name: httpd56
 
     restart: always
 
@@ -567,6 +606,8 @@ services:
   httpd70:
     image: cytopia/${HTTPD_SERVER:-nginx-stable}:latest
 
+    container_name: httpd70
+
     restart: always
 
     expose:
@@ -644,6 +685,8 @@ services:
   # ----------------------------------------
   httpd71:
     image: cytopia/${HTTPD_SERVER:-nginx-stable}:latest
+
+    container_name: httpd71
 
     restart: always
 
@@ -725,6 +768,8 @@ services:
   mysql:
     image: cytopia/${MYSQL_SERVER:-mysql-5.6}:latest
 
+    container_name: mysql
+
     environment:
 
       ##
@@ -793,6 +838,8 @@ services:
   pgsql:
     image: postgres:${PGSQL_SERVER:-9.6}
 
+    container_name: pgsql
+
     environment:
 
       - POSTGRES_USER=${PGSQL_ROOT_USER}
@@ -832,6 +879,8 @@ services:
   redis:
     image: redis:${REDIS_SERVER:-3.2}
 
+    container_name: redis
+
     ports:
       # [local-machine:]local-port:docker-port
       - "${LOCAL_LISTEN_ADDR}${HOST_PORT_REDIS}:6379"
@@ -862,6 +911,8 @@ services:
   memcd:
     image: memcached:${MEMCD_SERVER:-latest}
 
+    container_name: memcd
+
     ports:
       # [local-machine:]local-port:docker-port
       - "${LOCAL_LISTEN_ADDR}${HOST_PORT_MEMCD}:11211"
@@ -885,7 +936,6 @@ services:
       - httpd56
       - httpd70
       - httpd71
-
 
 
 ################################################################################
