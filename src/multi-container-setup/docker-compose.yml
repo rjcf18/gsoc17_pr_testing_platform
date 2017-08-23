@@ -455,7 +455,7 @@ services:
       - VIRTUAL_HOST=jenkins.dbox-tests.ml
       - VIRTUAL_PORT=8080
       - LETSENCRYPT_HOST=jenkins.dbox-tests.ml
-      - LETSENCRYPT_EMAIL=email@email.com
+      - LETSENCRYPT_EMAIL=email@example.com
 
     volumes:
       - ${DEVILBOX_PATH}/data/jenkins:/var/jenkins_home
@@ -702,7 +702,7 @@ services:
 
       - VIRTUAL_HOST=~^(www\.)*dbox-tests\.ml$$,~^71.*\.dbox-tests\.ml$$
       - LETSENCRYPT_HOST=www.dbox-tests.ml,dbox-tests.ml
-      - LETSENCRYPT_EMAIL=email@email.com
+      - LETSENCRYPT_EMAIL=email@example.com
 
       ##
       ## Debug?
